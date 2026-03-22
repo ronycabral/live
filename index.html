@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Realtime's Club — Aula ao Vivo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050508;
+    --surface: #0d0d14;
+    --purple: #7b2fff;
+    --purple-light: #a855f7;
+    --neon-violet: #c026d3;
+    --neon-blue: #06b6d4;
+    --neon-green: #39ff14;
+    --text: #f0eaff;
+    --muted: #8b7aa8;
+    --border: rgba(123,47,255,0.25);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Mono', monospace;
+    overflow-x: hidden;
+    cursor: crosshair;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.035;
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  .grid-bg {
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(123,47,255,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(123,47,255,0.06) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); pointer-events: none; z-index: 0; }
+  .glow-orb.one { width: 600px; height: 600px; background: rgba(123,47,255,0.18); top: -200px; left: -200px; animation: drift1 12s ease-in-out infinite alternate; }
+  .glow-orb.two { width: 400px; height: 400px; background: rgba(192,38,211,0.12); bottom: -100px; right: -100px; animation: drift2 15s ease-in-out infinite alternate; }
+  .glow-orb.three { width: 300px; height: 300px; background: rgba(6,182,212,0.08); top: 50%; left: 60%; animation: drift3 18s ease-in-out infinite alternate; }
+
+  @keyframes drift1 { to { transform: translate(80px, 60px); } }
+  @keyframes drift2 { to { transform: translate(-60px, -80px); } }
+  @keyframes drift3 { to { transform: translate(-80px, 60px); } }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 48px;
+    background: rgba(5,5,8,0.7);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem; letter-spacing: 0.08em; color: var(--text); text-transform: uppercase; }
+  .nav-logo span { color: var(--purple-light); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+
+  .nav-badge {
+    font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--neon-green); border: 1px solid var(--neon-green); padding: 4px 10px;
+    animation: blink-border 2s step-end infinite;
+  }
+
+  .admin-trigger {
+    font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: rgba(123,47,255,0.25); cursor: pointer; padding: 4px 8px;
+    border: 1px solid rgba(123,47,255,0.1);
+    transition: all 0.2s; user-select: none;
+  }
+  .admin-trigger:hover { color: var(--purple-light); border-color: var(--border); }
+
+  @keyframes blink-border {
+    0%, 100% { border-color: var(--neon-green); color: var(--neon-green); }
+    50% { border-color: rgba(57,255,20,0.3); color: rgba(57,255,20,0.5); }
+  }
+
+  .hero {
+    position: relative; min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 120px 24px 80px; z-index: 1;
+  }
+
+  .hero-eyebrow { font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--purple-light); margin-bottom: 24px; opacity: 0; animation: fadeUp 0.8s 0.2s forwards; }
+  .hero-eyebrow::before, .hero-eyebrow::after { content: '—'; margin: 0 8px; opacity: 0.5; }
+
+  .hero-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(2.8rem, 8vw, 7rem); line-height: 0.95; letter-spacing: -0.02em; text-transform: uppercase; margin-bottom: 8px; opacity: 0; animation: fadeUp 0.8s 0.4s forwards; }
+  .hero-title .line-accent { display: block; background: linear-gradient(90deg, var(--purple), var(--neon-violet), var(--neon-blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .hero-title .line-stroke { display: block; -webkit-text-stroke: 1.5px rgba(240,234,255,0.3); -webkit-text-fill-color: transparent; color: transparent; }
+
+  .hero-sub { font-size: clamp(0.85rem, 2vw, 1rem); color: var(--muted); max-width: 560px; line-height: 1.7; margin: 32px auto 48px; opacity: 0; animation: fadeUp 0.8s 0.6s forwards; }
+  .hero-sub strong { color: var(--text); }
+
+  .scan-divider { width: 100%; max-width: 560px; height: 1px; background: linear-gradient(90deg, transparent, var(--purple), transparent); margin: 0 auto 48px; opacity: 0; animation: fadeUp 0.8s 0.7s forwards; }
+
+  .cta-wrap { opacity: 0; animation: fadeUp 0.8s 0.8s forwards; }
+
+  .cta-btn {
+    display: inline-flex; align-items: center; gap: 14px;
+    background: linear-gradient(135deg, var(--purple), var(--neon-violet));
+    color: #fff; text-decoration: none; font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 1rem; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 20px 48px; position: relative; overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 0 40px rgba(123,47,255,0.4), 0 0 80px rgba(123,47,255,0.15);
+  }
+  .cta-btn::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, var(--neon-violet), var(--purple)); opacity: 0; transition: opacity 0.3s; }
+  .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 0 60px rgba(123,47,255,0.6), 0 0 120px rgba(123,47,255,0.2); }
+  .cta-btn:hover::before { opacity: 1; }
+  .cta-btn span { position: relative; z-index: 1; }
+  .cta-btn .arrow { position: relative; z-index: 1; font-size: 1.2rem; transition: transform 0.2s; }
+  .cta-btn:hover .arrow { transform: translateX(4px); }
+
+  .cta-note { margin-top: 16px; font-size: 0.68rem; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; }
+
+  .ticker-wrap { position: relative; z-index: 1; overflow: hidden; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 14px 0; background: rgba(13,13,20,0.6); opacity: 0; animation: fadeIn 1s 1.2s forwards; }
+  .ticker-track { display: flex; gap: 64px; width: max-content; animation: ticker 22s linear infinite; white-space: nowrap; }
+  .ticker-item { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--purple-light); opacity: 0.7; flex-shrink: 0; }
+  .ticker-item .dot { color: var(--neon-green); margin-right: 20px; }
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  section { position: relative; z-index: 1; max-width: 980px; margin: 0 auto; padding: 100px 24px; }
+
+  .section-label { font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--purple-light); margin-bottom: 40px; display: flex; align-items: center; gap: 12px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .learns-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .learn-card { background: var(--surface); padding: 40px 32px; position: relative; overflow: hidden; transition: background 0.3s; }
+  .learn-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 0; background: linear-gradient(to bottom, var(--purple), var(--neon-violet)); transition: height 0.4s; }
+  .learn-card:hover { background: rgba(123,47,255,0.08); }
+  .learn-card:hover::before { height: 100%; }
+  .learn-number { font-family: 'Syne', sans-serif; font-size: 3.5rem; font-weight: 800; line-height: 1; color: rgba(123,47,255,0.2); margin-bottom: 16px; letter-spacing: -0.04em; }
+  .learn-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.05rem; margin-bottom: 12px; color: var(--text); }
+  .learn-desc { font-size: 0.78rem; line-height: 1.7; color: var(--muted); }
+
+  .for-who-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .for-card { border: 1px solid var(--border); padding: 32px; background: var(--surface); }
+  .for-card.yes { border-color: rgba(57,255,20,0.2); }
+  .for-card.no { border-color: rgba(239,68,68,0.2); }
+  .for-tag { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; padding: 4px 10px; margin-bottom: 20px; display: inline-block; font-weight: 700; }
+  .for-card.yes .for-tag { color: var(--neon-green); border: 1px solid rgba(57,255,20,0.3); }
+  .for-card.no .for-tag { color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
+  .for-list { list-style: none; }
+  .for-list li { font-size: 0.8rem; color: var(--muted); padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; }
+  .for-list li:last-child { border-bottom: none; }
+  .for-list li::before { flex-shrink: 0; margin-top: 2px; font-size: 0.7rem; }
+  .for-card.yes .for-list li::before { content: '→'; color: var(--neon-green); }
+  .for-card.no .for-list li::before { content: '×'; color: #f87171; }
+
+  .instructor-block { display: grid; grid-template-columns: 1fr 2fr; gap: 60px; align-items: center; border: 1px solid var(--border); padding: 60px; background: var(--surface); }
+  .instructor-visual { aspect-ratio: 1; background: linear-gradient(135deg, var(--purple), var(--neon-violet)); display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-size: 4rem; font-weight: 800; position: relative; overflow: hidden; }
+  .instructor-visual::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 60%, rgba(5,5,8,0.8)); }
+  .instructor-name { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; margin-bottom: 8px; }
+  .instructor-role { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--purple-light); margin-bottom: 24px; }
+  .instructor-bio { font-size: 0.82rem; line-height: 1.8; color: var(--muted); }
+
+  .countdown-wrap { text-align: center; padding: 80px 24px; position: relative; z-index: 1; }
+  .countdown-title { font-family: 'Syne', sans-serif; font-size: 0.75rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--purple-light); margin-bottom: 40px; }
+  .countdown-grid { display: flex; justify-content: center; gap: 2px; margin-bottom: 64px; }
+  .countdown-unit { background: var(--surface); border: 1px solid var(--border); padding: 32px 40px; min-width: 120px; text-align: center; }
+  .countdown-num { font-family: 'Syne', sans-serif; font-size: 3.5rem; font-weight: 800; line-height: 1; background: linear-gradient(135deg, var(--purple-light), var(--neon-blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .countdown-label { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-top: 8px; }
+
+  .final-cta { text-align: center; padding: 120px 24px; position: relative; z-index: 1; border-top: 1px solid var(--border); }
+  .final-cta-title { font-family: 'Syne', sans-serif; font-size: clamp(2rem, 5vw, 4rem); font-weight: 800; text-transform: uppercase; line-height: 1.05; margin-bottom: 24px; }
+  .final-cta-title span { display: block; background: linear-gradient(90deg, var(--purple-light), var(--neon-violet)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .final-cta-sub { font-size: 0.82rem; color: var(--muted); margin-bottom: 48px; line-height: 1.7; }
+
+  footer { position: relative; z-index: 1; border-top: 1px solid var(--border); padding: 32px 48px; display: flex; align-items: center; justify-content: space-between; font-size: 0.65rem; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; }
+  footer a { color: var(--purple-light); text-decoration: none; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { to { opacity: 1; } }
+
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s, transform 0.7s; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  .scan-hover { position: relative; overflow: hidden; }
+  .scan-hover::after { content: ''; position: absolute; top: -100%; left: 0; right: 0; height: 40%; background: linear-gradient(transparent, rgba(123,47,255,0.06), transparent); transition: top 0.4s ease; pointer-events: none; }
+  .scan-hover:hover::after { top: 150%; }
+
+  /* ════ PAINEL ADMIN ════ */
+  .admin-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(5,5,8,0.96); backdrop-filter: blur(16px);
+    z-index: 9000; align-items: center; justify-content: center; padding: 24px;
+  }
+  .admin-overlay.open { display: flex; }
+
+  .admin-panel {
+    background: var(--surface); border: 1px solid var(--border);
+    width: 100%; max-width: 480px; padding: 48px 40px; position: relative;
+  }
+  .admin-panel::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--purple), var(--neon-violet), var(--neon-blue)); }
+
+  .admin-close { position: absolute; top: 16px; right: 16px; background: none; border: none; color: var(--muted); font-size: 1.2rem; cursor: pointer; transition: color 0.2s; }
+  .admin-close:hover { color: var(--text); }
+
+  .admin-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.3rem; margin-bottom: 6px; text-transform: uppercase; }
+  .admin-subtitle { font-size: 0.7rem; letter-spacing: 0.15em; color: var(--muted); text-transform: uppercase; margin-bottom: 32px; }
+
+  .admin-field { margin-bottom: 20px; }
+  .admin-label { display: block; font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--purple-light); margin-bottom: 8px; }
+  .admin-input { width: 100%; background: var(--bg); border: 1px solid var(--border); color: var(--text); font-family: 'Space Mono', monospace; font-size: 0.85rem; padding: 12px 16px; outline: none; transition: border-color 0.2s; }
+  .admin-input:focus { border-color: var(--purple-light); }
+  .admin-input::placeholder { color: var(--muted); }
+
+  .admin-btn { width: 100%; padding: 16px; margin-top: 8px; background: linear-gradient(135deg, var(--purple), var(--neon-violet)); border: none; color: #fff; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.9rem; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: opacity 0.2s; }
+  .admin-btn:hover { opacity: 0.85; }
+
+  .admin-msg { margin-top: 16px; font-size: 0.7rem; letter-spacing: 0.1em; text-align: center; text-transform: uppercase; min-height: 20px; }
+  .admin-msg.ok { color: var(--neon-green); }
+  .admin-msg.err { color: #f87171; }
+
+  .admin-divider { height: 1px; background: var(--border); margin: 28px 0; }
+  .admin-current { font-size: 0.7rem; color: var(--muted); line-height: 1.8; }
+  .admin-current span { color: var(--purple-light); }
+
+  #admin-settings { display: none; }
+
+  @media (max-width: 768px) {
+    nav { padding: 16px 20px; }
+    .for-who-grid { grid-template-columns: 1fr; }
+    .instructor-block { grid-template-columns: 1fr; padding: 32px 24px; gap: 32px; }
+    .instructor-visual { max-width: 140px; margin: 0 auto; font-size: 2.5rem; }
+    .countdown-unit { min-width: 70px; padding: 20px 16px; }
+    .countdown-num { font-size: 2.2rem; }
+    footer { flex-direction: column; gap: 12px; text-align: center; }
+    .admin-panel { padding: 36px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+<div class="glow-orb one"></div>
+<div class="glow-orb two"></div>
+<div class="glow-orb three"></div>
+
+<!-- PAINEL ADMIN -->
+<div class="admin-overlay" id="adminOverlay">
+  <div class="admin-panel">
+    <button class="admin-close" onclick="closeAdmin()">✕</button>
+
+    <div id="admin-login">
+      <div class="admin-title">Painel Admin</div>
+      <div class="admin-subtitle">Realtime's Club · Acesso Restrito</div>
+      <div class="admin-field">
+        <label class="admin-label">Senha</label>
+        <input class="admin-input" type="password" id="admin-pass" placeholder="Digite a senha..." onkeydown="if(event.key==='Enter') doLogin()">
+      </div>
+      <button class="admin-btn" onclick="doLogin()">Entrar →</button>
+      <div class="admin-msg" id="login-msg"></div>
+    </div>
+
+    <div id="admin-settings">
+      <div class="admin-title">Configurar Live</div>
+      <div class="admin-subtitle">Atualize a próxima aula ao vivo</div>
+
+      <div class="admin-field">
+        <label class="admin-label">Data da Live</label>
+        <input class="admin-input" type="date" id="admin-date">
+      </div>
+      <div class="admin-field">
+        <label class="admin-label">Horário — Brasília (BRT)</label>
+        <input class="admin-input" type="time" id="admin-time" value="20:00">
+      </div>
+      <div class="admin-field">
+        <label class="admin-label">Título do Contador (opcional)</label>
+        <input class="admin-input" type="text" id="admin-title-txt" placeholder="Ex: Live #12 começa em...">
+      </div>
+
+      <button class="admin-btn" onclick="saveSettings()">Salvar e Publicar →</button>
+      <div class="admin-msg" id="save-msg"></div>
+
+      <div class="admin-divider"></div>
+      <div class="admin-current" id="admin-current-info">Carregando...</div>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Realtime's <span>Club</span></div>
+  <div class="nav-right">
+    <div class="nav-badge" id="nav-badge">● Ao Vivo em Breve</div>
+    <div class="admin-trigger" onclick="openAdmin()" title="Admin">⚙</div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <p class="hero-eyebrow">Evento Exclusivo · Vagas Limitadas</p>
+  <h1 class="hero-title">
+    <span class="line-stroke">Realtime's</span>
+    <span class="line-accent">Club</span>
+  </h1>
+  <p class="hero-sub">
+    Uma aula ao vivo pensada pra quem está <strong>pronto pra dar o próximo nível.</strong><br>
+    Estratégia. Prática. Resultado real — em tempo real.
+  </p>
+  <div class="scan-divider"></div>
+  <div class="cta-wrap">
+    <a href="https://pay.kiwify.com.br/1Cz8z4z" class="cta-btn scan-hover" target="_blank" rel="noopener">
+      <span>Garantir minha vaga</span>
+      <span class="arrow">→</span>
+    </a>
+    <p class="cta-note">Acesso imediato ao grupo exclusivo após pagamento</p>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <span class="ticker-item"><span class="dot">◆</span>Aula ao Vivo</span>
+    <span class="ticker-item"><span class="dot">◆</span>Vagas Limitadas</span>
+    <span class="ticker-item"><span class="dot">◆</span>Grupo Exclusivo</span>
+    <span class="ticker-item"><span class="dot">◆</span>Estratégia Real</span>
+    <span class="ticker-item"><span class="dot">◆</span>Realtime's Club</span>
+    <span class="ticker-item"><span class="dot">◆</span>Acesso Via Kiwify</span>
+    <span class="ticker-item"><span class="dot">◆</span>Aula ao Vivo</span>
+    <span class="ticker-item"><span class="dot">◆</span>Vagas Limitadas</span>
+    <span class="ticker-item"><span class="dot">◆</span>Grupo Exclusivo</span>
+    <span class="ticker-item"><span class="dot">◆</span>Estratégia Real</span>
+    <span class="ticker-item"><span class="dot">◆</span>Realtime's Club</span>
+    <span class="ticker-item"><span class="dot">◆</span>Acesso Via Kiwify</span>
+  </div>
+</div>
+
+<!-- O QUE VOCÊ VAI APRENDER -->
+<section>
+  <div class="section-label reveal">O que você vai aprender</div>
+  <div class="learns-grid">
+    <div class="learn-card scan-hover reveal">
+      <div class="learn-number">01</div>
+      <div class="learn-title">Fundamentos que Funcionam</div>
+      <div class="learn-desc">Conceitos diretos que você aplica ainda durante a aula. Zero enrolação, 100% prático.</div>
+    </div>
+    <div class="learn-card scan-hover reveal" style="transition-delay:0.1s">
+      <div class="learn-number">02</div>
+      <div class="learn-title">Estratégia em Tempo Real</div>
+      <div class="learn-desc">Tomada de decisão ao vivo, com situações reais discutidas no momento.</div>
+    </div>
+    <div class="learn-card scan-hover reveal" style="transition-delay:0.2s">
+      <div class="learn-number">03</div>
+      <div class="learn-title">Próximos Passos Claros</div>
+      <div class="learn-desc">Você sai da aula sabendo exatamente o que fazer — com um caminho definido pra evoluir.</div>
+    </div>
+  </div>
+</section>
+
+<!-- PARA QUEM É -->
+<section>
+  <div class="section-label reveal">Para quem é essa aula</div>
+  <div class="for-who-grid">
+    <div class="for-card yes reveal">
+      <span class="for-tag">✓ É pra você se...</span>
+      <ul class="for-list">
+        <li>Quer aprender na prática, não só teoria</li>
+        <li>Está disposto a agir logo após a aula</li>
+        <li>Busca evolução real e consistente</li>
+        <li>Quer fazer parte de uma comunidade séria</li>
+      </ul>
+    </div>
+    <div class="for-card no reveal" style="transition-delay:0.15s">
+      <span class="for-tag">× Não é pra você se...</span>
+      <ul class="for-list">
+        <li>Busca fórmula mágica sem esforço</li>
+        <li>Não está pronto pra sair da zona de conforto</li>
+        <li>Prefere consumir sem implementar</li>
+        <li>Não tem tempo pra se comprometer</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- INSTRUTOR -->
+<section>
+  <div class="section-label reveal">Quem vai conduzir</div>
+  <div class="instructor-block reveal">
+    <div class="instructor-visual">RC</div>
+    <div>
+      <div class="instructor-name">Rony Cabral</div>
+      <div class="instructor-role">Fundador · Creative Squad Productions</div>
+      <p class="instructor-bio">
+        Profissional com anos de experiência no mercado, fundador da Creative Squad Productions e criador do Realtime's Club. Apaixonado por transformar conhecimento em resultados concretos para quem está disposto a evoluir de verdade.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- COUNTDOWN -->
+<div class="countdown-wrap reveal">
+  <p class="countdown-title" id="live-title-display">A aula começa em</p>
+  <div class="countdown-grid">
+    <div class="countdown-unit"><div class="countdown-num" id="cd-days">00</div><div class="countdown-label">Dias</div></div>
+    <div class="countdown-unit"><div class="countdown-num" id="cd-hours">00</div><div class="countdown-label">Horas</div></div>
+    <div class="countdown-unit"><div class="countdown-num" id="cd-min">00</div><div class="countdown-label">Minutos</div></div>
+    <div class="countdown-unit"><div class="countdown-num" id="cd-sec">00</div><div class="countdown-label">Segundos</div></div>
+  </div>
+  <a href="https://pay.kiwify.com.br/1Cz8z4z" class="cta-btn scan-hover" target="_blank" rel="noopener">
+    <span>Garantir minha vaga agora</span>
+    <span class="arrow">→</span>
+  </a>
+  <p class="cta-note" style="margin-top:16px">Após o pagamento você recebe o acesso ao grupo exclusivo</p>
+</div>
+
+<!-- FINAL CTA -->
+<div class="final-cta reveal">
+  <div class="final-cta-title">
+    Você está a um<br>
+    <span>clique de distância.</span>
+  </div>
+  <p class="final-cta-sub">As vagas são limitadas. Não espere a última hora.</p>
+  <a href="https://pay.kiwify.com.br/1Cz8z4z" class="cta-btn scan-hover" target="_blank" rel="noopener">
+    <span>Quero participar da aula ao vivo</span>
+    <span class="arrow">→</span>
+  </a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2025 Realtime's Club · <a href="http://www.ronycabral.com.br" target="_blank">ronycabral.com.br</a></span>
+  <span>Creative Squad Productions</span>
+</footer>
+
+<script>
+// ══ SENHA DO PAINEL — troque antes de subir ══
+const ADMIN_PASSWORD = 'realtimes2025';
+const STORAGE_KEY    = 'rtc_live_config';
+
+// ── Scroll Reveal ──
+const reveals = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+}, { threshold: 0.1 });
+reveals.forEach(el => io.observe(el));
+
+// ── Config (localStorage) ──
+function loadConfig() {
+  try { const r = localStorage.getItem(STORAGE_KEY); return r ? JSON.parse(r) : null; }
+  catch(e) { return null; }
+}
+function saveConfig(cfg) { localStorage.setItem(STORAGE_KEY, JSON.stringify(cfg)); }
+
+// ── Countdown ──
+function getEventDate() {
+  const cfg = loadConfig();
+  if (cfg && cfg.date && cfg.time) return new Date(`${cfg.date}T${cfg.time}:00-03:00`);
+  return null;
+}
+
+function updateCountdown() {
+  const ED   = getEventDate();
+  const badge = document.getElementById('nav-badge');
+
+  if (!ED) {
+    ['cd-days','cd-hours','cd-min','cd-sec'].forEach(id => document.getElementById(id).textContent = '--');
+    return;
+  }
+
+  const diff = ED - new Date();
+
+  if (diff <= 0) {
+    ['cd-days','cd-hours','cd-min','cd-sec'].forEach(id => document.getElementById(id).textContent = '00');
+    badge.textContent = '● AO VIVO AGORA';
+    return;
+  }
+
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+
+  document.getElementById('cd-days').textContent  = String(d).padStart(2,'0');
+  document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
+  document.getElementById('cd-min').textContent   = String(m).padStart(2,'0');
+  document.getElementById('cd-sec').textContent   = String(s).padStart(2,'0');
+}
+
+function applyConfig() {
+  const cfg = loadConfig();
+  if (cfg && cfg.title) document.getElementById('live-title-display').textContent = cfg.title;
+}
+
+updateCountdown();
+applyConfig();
+setInterval(updateCountdown, 1000);
+
+// ── Admin ──
+function openAdmin() {
+  document.getElementById('adminOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  document.getElementById('admin-login').style.display    = 'block';
+  document.getElementById('admin-settings').style.display = 'none';
+  document.getElementById('admin-pass').value  = '';
+  document.getElementById('login-msg').textContent = '';
+  setTimeout(() => document.getElementById('admin-pass').focus(), 100);
+}
+
+function closeAdmin() {
+  document.getElementById('adminOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('adminOverlay').addEventListener('click', function(e) { if (e.target === this) closeAdmin(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAdmin(); });
+
+function doLogin() {
+  const pass = document.getElementById('admin-pass').value;
+  const msg  = document.getElementById('login-msg');
+  if (pass === ADMIN_PASSWORD) {
+    document.getElementById('admin-login').style.display    = 'none';
+    document.getElementById('admin-settings').style.display = 'block';
+    loadCurrentConfig();
+  } else {
+    msg.className = 'admin-msg err';
+    msg.textContent = '✕ Senha incorreta';
+    document.getElementById('admin-pass').value = '';
+  }
+}
+
+function loadCurrentConfig() {
+  const cfg  = loadConfig();
+  const info = document.getElementById('admin-current-info');
+  if (cfg && cfg.date) {
+    const [y,mo,d] = cfg.date.split('-');
+    document.getElementById('admin-date').value       = cfg.date;
+    document.getElementById('admin-time').value       = cfg.time || '20:00';
+    document.getElementById('admin-title-txt').value  = cfg.title || '';
+    info.innerHTML = `Configuração ativa:<br><span>${d}/${mo}/${y} às ${cfg.time || '20:00'} (Brasília)</span>`;
+  } else {
+    info.innerHTML = `<span>Nenhuma data configurada ainda.</span>`;
+    const t = new Date(); t.setDate(t.getDate() + 7);
+    document.getElementById('admin-date').value = t.toISOString().split('T')[0];
+    document.getElementById('admin-time').value = '20:00';
+  }
+}
+
+function saveSettings() {
+  const date  = document.getElementById('admin-date').value;
+  const time  = document.getElementById('admin-time').value;
+  const title = document.getElementById('admin-title-txt').value.trim();
+  const msg   = document.getElementById('save-msg');
+
+  if (!date || !time) {
+    msg.className = 'admin-msg err';
+    msg.textContent = '✕ Preencha data e horário';
+    return;
+  }
+
+  saveConfig({ date, time, title: title || 'A aula começa em' });
+  updateCountdown();
+  applyConfig();
+  loadCurrentConfig();
+
+  msg.className = 'admin-msg ok';
+  msg.textContent = '✓ Salvo! Countdown atualizado ao vivo.';
+  setTimeout(() => msg.textContent = '', 3500);
+}
+</script>
+</body>
+</html>
