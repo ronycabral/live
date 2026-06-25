@@ -3,25 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Realtime's Club — Aula ao Vivo</title>
+<title>Realtime's Club · Aula ao Vivo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #050508;
     --surface: #0d0d14;
-    --purple: #7b2fff;
-    --purple-light: #a855f7;
-    --neon-violet: #c026d3;
-    --neon-blue: #06b6d4;
+    --purple: #7a1f2b;
+    --purple-light: #d93a30;
+    --neon-violet: #f01020;
+    --neon-blue: #4a0f17;
     --neon-green: #39ff14;
     --text: #f0eaff;
     --muted: #8b7aa8;
-    --border: rgba(123,47,255,0.25);
+    --border: rgba(122,31,43,0.25);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; overflow-x: hidden; }
 
   body {
     background: var(--bg);
@@ -43,17 +43,17 @@
   .grid-bg {
     position: fixed; inset: 0;
     background-image:
-      linear-gradient(rgba(123,47,255,0.06) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(123,47,255,0.06) 1px, transparent 1px);
+      linear-gradient(rgba(122,31,43,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(122,31,43,0.06) 1px, transparent 1px);
     background-size: 48px 48px;
     pointer-events: none;
     z-index: 0;
   }
 
   .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); pointer-events: none; z-index: 0; }
-  .glow-orb.one { width: 600px; height: 600px; background: rgba(123,47,255,0.18); top: -200px; left: -200px; animation: drift1 12s ease-in-out infinite alternate; }
-  .glow-orb.two { width: 400px; height: 400px; background: rgba(192,38,211,0.12); bottom: -100px; right: -100px; animation: drift2 15s ease-in-out infinite alternate; }
-  .glow-orb.three { width: 300px; height: 300px; background: rgba(6,182,212,0.08); top: 50%; left: 60%; animation: drift3 18s ease-in-out infinite alternate; }
+  .glow-orb.one { width: 600px; height: 600px; background: rgba(122,31,43,0.18); top: -200px; left: -200px; animation: drift1 12s ease-in-out infinite alternate; }
+  .glow-orb.two { width: 400px; height: 400px; background: rgba(229,9,20,0.12); bottom: -100px; right: -100px; animation: drift2 15s ease-in-out infinite alternate; }
+  .glow-orb.three { width: 300px; height: 300px; background: rgba(74,15,23,0.08); top: 50%; left: 60%; animation: drift3 18s ease-in-out infinite alternate; }
 
   @keyframes drift1 { to { transform: translate(80px, 60px); } }
   @keyframes drift2 { to { transform: translate(-60px, -80px); } }
@@ -81,8 +81,8 @@
 
   .admin-trigger {
     font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase;
-    color: rgba(123,47,255,0.25); cursor: pointer; padding: 4px 8px;
-    border: 1px solid rgba(123,47,255,0.1);
+    color: rgba(122,31,43,0.4); cursor: pointer; padding: 4px 8px;
+    border: 1px solid rgba(122,31,43,0.2);
     transition: all 0.2s; user-select: none;
   }
   .admin-trigger:hover { color: var(--purple-light); border-color: var(--border); }
@@ -99,9 +99,9 @@
   }
 
   .hero-eyebrow { font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--purple-light); margin-bottom: 24px; opacity: 0; animation: fadeUp 0.8s 0.2s forwards; }
-  .hero-eyebrow::before, .hero-eyebrow::after { content: '—'; margin: 0 8px; opacity: 0.5; }
+  .hero-eyebrow::before, .hero-eyebrow::after { content: '·'; margin: 0 8px; opacity: 0.5; }
 
-  .hero-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(2.8rem, 8vw, 7rem); line-height: 0.95; letter-spacing: -0.02em; text-transform: uppercase; margin-bottom: 8px; opacity: 0; animation: fadeUp 0.8s 0.4s forwards; }
+  .hero-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(2.4rem, 7vw, 7rem); line-height: 0.95; letter-spacing: -0.02em; text-transform: uppercase; margin-bottom: 8px; opacity: 0; animation: fadeUp 0.8s 0.4s forwards; }
   .hero-title .line-accent { display: block; background: linear-gradient(90deg, var(--purple), var(--neon-violet), var(--neon-blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
   .hero-title .line-stroke { display: block; -webkit-text-stroke: 1.5px rgba(240,234,255,0.3); -webkit-text-fill-color: transparent; color: transparent; }
 
@@ -119,10 +119,10 @@
     font-weight: 700; font-size: 1rem; letter-spacing: 0.06em; text-transform: uppercase;
     padding: 20px 48px; position: relative; overflow: hidden;
     transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 0 40px rgba(123,47,255,0.4), 0 0 80px rgba(123,47,255,0.15);
+    box-shadow: 0 0 40px rgba(122,31,43,0.5), 0 0 80px rgba(229,9,20,0.2);
   }
   .cta-btn::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, var(--neon-violet), var(--purple)); opacity: 0; transition: opacity 0.3s; }
-  .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 0 60px rgba(123,47,255,0.6), 0 0 120px rgba(123,47,255,0.2); }
+  .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 0 60px rgba(229,9,20,0.6), 0 0 120px rgba(229,9,20,0.25); }
   .cta-btn:hover::before { opacity: 1; }
   .cta-btn span { position: relative; z-index: 1; }
   .cta-btn .arrow { position: relative; z-index: 1; font-size: 1.2rem; transition: transform 0.2s; }
@@ -132,7 +132,7 @@
 
   .ticker-wrap { position: relative; z-index: 1; overflow: hidden; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 14px 0; background: rgba(13,13,20,0.6); opacity: 0; animation: fadeIn 1s 1.2s forwards; }
   .ticker-track { display: flex; gap: 64px; width: max-content; animation: ticker 22s linear infinite; white-space: nowrap; }
-  .ticker-item { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--purple-light); opacity: 0.7; flex-shrink: 0; }
+  .ticker-item { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: #e84a40; opacity: 0.92; flex-shrink: 0; }
   .ticker-item .dot { color: var(--neon-green); margin-right: 20px; }
   @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
@@ -144,9 +144,9 @@
   .learns-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); }
   .learn-card { background: var(--surface); padding: 40px 32px; position: relative; overflow: hidden; transition: background 0.3s; }
   .learn-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 0; background: linear-gradient(to bottom, var(--purple), var(--neon-violet)); transition: height 0.4s; }
-  .learn-card:hover { background: rgba(123,47,255,0.08); }
+  .learn-card:hover { background: rgba(122,31,43,0.08); }
   .learn-card:hover::before { height: 100%; }
-  .learn-number { font-family: 'Syne', sans-serif; font-size: 3.5rem; font-weight: 800; line-height: 1; color: rgba(123,47,255,0.2); margin-bottom: 16px; letter-spacing: -0.04em; }
+  .learn-number { font-family: 'Syne', sans-serif; font-size: 3.5rem; font-weight: 800; line-height: 1; color: rgba(122,31,43,0.42); margin-bottom: 16px; letter-spacing: -0.04em; }
   .learn-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.05rem; margin-bottom: 12px; color: var(--text); }
   .learn-desc { font-size: 0.78rem; line-height: 1.7; color: var(--muted); }
 
@@ -165,15 +165,16 @@
   .for-card.no .for-list li::before { content: '×'; color: #f87171; }
 
   .instructor-block { display: grid; grid-template-columns: 1fr 2fr; gap: 60px; align-items: center; border: 1px solid var(--border); padding: 60px; background: var(--surface); }
-  .instructor-visual { aspect-ratio: 1; background: linear-gradient(135deg, var(--purple), var(--neon-violet)); display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-size: 4rem; font-weight: 800; position: relative; overflow: hidden; }
-  .instructor-visual::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 60%, rgba(5,5,8,0.8)); }
+  .instructor-visual { aspect-ratio: 1; position: relative; overflow: hidden; }
+  .instructor-visual img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .instructor-visual::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 25%; background: linear-gradient(180deg, transparent, rgba(5,5,8,0.5)); pointer-events: none; }
   .instructor-name { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; margin-bottom: 8px; }
   .instructor-role { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--purple-light); margin-bottom: 24px; }
   .instructor-bio { font-size: 0.82rem; line-height: 1.8; color: var(--muted); }
 
   .countdown-wrap { text-align: center; padding: 80px 24px; position: relative; z-index: 1; }
   .countdown-title { font-family: 'Syne', sans-serif; font-size: 0.75rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--purple-light); margin-bottom: 40px; }
-  .countdown-grid { display: flex; justify-content: center; gap: 2px; margin-bottom: 64px; }
+  .countdown-grid { display: flex; justify-content: center; flex-wrap: wrap; gap: 2px; margin-bottom: 64px; }
   .countdown-unit { background: var(--surface); border: 1px solid var(--border); padding: 32px 40px; min-width: 120px; text-align: center; }
   .countdown-num { font-family: 'Syne', sans-serif; font-size: 3.5rem; font-weight: 800; line-height: 1; background: linear-gradient(135deg, var(--purple-light), var(--neon-blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
   .countdown-label { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-top: 8px; }
@@ -193,7 +194,7 @@
   .reveal.visible { opacity: 1; transform: none; }
 
   .scan-hover { position: relative; overflow: hidden; }
-  .scan-hover::after { content: ''; position: absolute; top: -100%; left: 0; right: 0; height: 40%; background: linear-gradient(transparent, rgba(123,47,255,0.06), transparent); transition: top 0.4s ease; pointer-events: none; }
+  .scan-hover::after { content: ''; position: absolute; top: -100%; left: 0; right: 0; height: 40%; background: linear-gradient(transparent, rgba(122,31,43,0.06), transparent); transition: top 0.4s ease; pointer-events: none; }
   .scan-hover:hover::after { top: 150%; }
 
   /* ════ PAINEL ADMIN ════ */
@@ -233,17 +234,22 @@
   .admin-current { font-size: 0.7rem; color: var(--muted); line-height: 1.8; }
   .admin-current span { color: var(--purple-light); }
 
-  #admin-settings { display: none; }
-
   @media (max-width: 768px) {
     nav { padding: 16px 20px; }
     .for-who-grid { grid-template-columns: 1fr; }
     .instructor-block { grid-template-columns: 1fr; padding: 32px 24px; gap: 32px; }
-    .instructor-visual { max-width: 140px; margin: 0 auto; font-size: 2.5rem; }
-    .countdown-unit { min-width: 70px; padding: 20px 16px; }
-    .countdown-num { font-size: 2.2rem; }
+    .instructor-visual { max-width: 200px; margin: 0 auto; }
+    .countdown-unit { min-width: 60px; padding: 16px 12px; }
+    .countdown-num { font-size: 2rem; }
+    .countdown-grid { gap: 4px; }
     footer { flex-direction: column; gap: 12px; text-align: center; }
     .admin-panel { padding: 36px 24px; }
+  }
+
+  @media (max-width: 400px) {
+    .countdown-unit { min-width: 52px; padding: 12px 8px; }
+    .countdown-num { font-size: 1.6rem; }
+    .cta-btn { padding: 16px 28px; font-size: 0.85rem; }
   }
 </style>
 </head>
@@ -259,40 +265,23 @@
   <div class="admin-panel">
     <button class="admin-close" onclick="closeAdmin()">✕</button>
 
-    <div id="admin-login">
-      <div class="admin-title">Painel Admin</div>
-      <div class="admin-subtitle">Realtime's Club · Acesso Restrito</div>
-      <div class="admin-field">
-        <label class="admin-label">Senha</label>
-        <input class="admin-input" type="password" id="admin-pass" placeholder="Digite a senha..." onkeydown="if(event.key==='Enter') doLogin()">
-      </div>
-      <button class="admin-btn" onclick="doLogin()">Entrar →</button>
-      <div class="admin-msg" id="login-msg"></div>
-    </div>
+    <div class="admin-title">Status da Live</div>
+    <div class="admin-subtitle">Realtime's Club · Configuração Atual</div>
 
-    <div id="admin-settings">
-      <div class="admin-title">Configurar Live</div>
-      <div class="admin-subtitle">Atualize a próxima aula ao vivo</div>
+    <div class="admin-current" id="admin-current-info" style="margin-bottom:24px;">Carregando...</div>
 
-      <div class="admin-field">
-        <label class="admin-label">Data da Live</label>
-        <input class="admin-input" type="date" id="admin-date">
-      </div>
-      <div class="admin-field">
-        <label class="admin-label">Horário — Brasília (BRT)</label>
-        <input class="admin-input" type="time" id="admin-time" value="20:00">
-      </div>
-      <div class="admin-field">
-        <label class="admin-label">Título do Contador (opcional)</label>
-        <input class="admin-input" type="text" id="admin-title-txt" placeholder="Ex: Live #12 começa em...">
-      </div>
+    <div class="admin-divider"></div>
 
-      <button class="admin-btn" onclick="saveSettings()">Salvar e Publicar →</button>
-      <div class="admin-msg" id="save-msg"></div>
-
-      <div class="admin-divider"></div>
-      <div class="admin-current" id="admin-current-info">Carregando...</div>
-    </div>
+    <p style="font-size:0.72rem; color:var(--muted); line-height:1.9; margin-top:20px;">
+      Para atualizar a data, horário ou o aviso da palestra presencial, acesse o painel da Vercel em<br>
+      <span style="color:var(--purple-light);">vercel.com → projeto → Settings → Environment Variables</span><br>
+      e edite as variáveis
+      <span style="color:var(--purple-light);">LIVE_DATE</span>,
+      <span style="color:var(--purple-light);">LIVE_TIME</span>,
+      <span style="color:var(--purple-light);">LIVE_TITLE</span> ou
+      <span style="color:var(--purple-light);">SHOW_PROMO_NOTE</span>.<br>
+      Depois, faça um <strong style="color:var(--text);">Redeploy</strong> para aplicar.
+    </p>
   </div>
 </div>
 
@@ -313,8 +302,7 @@
     <span class="line-accent">Club</span>
   </h1>
   <p class="hero-sub">
-    Uma aula ao vivo pensada pra quem está <strong>pronto pra dar o próximo nível.</strong><br>
-    Estratégia. Prática. Resultado real — em tempo real.
+    Uma aula ao vivo sobre como <strong>filmmakers param de prospectar</strong> e passam a ser procurados pelos grandes eventos. Posicionamento real, bastidores concretos e a estratégia que transforma sua câmera em autoridade.
   </p>
   <div class="scan-divider"></div>
   <div class="cta-wrap">
@@ -323,6 +311,7 @@
       <span class="arrow">→</span>
     </a>
     <p class="cta-note">Acesso imediato ao grupo exclusivo após pagamento</p>
+    <p id="event-promo-note" class="cta-note" style="margin-top:10px; color:var(--purple-light);">Quem participar da aula concorre a uma vaga presencial na palestra do dia 27.</p>
   </div>
 </div>
 
@@ -350,18 +339,18 @@
   <div class="learns-grid">
     <div class="learn-card scan-hover reveal">
       <div class="learn-number">01</div>
-      <div class="learn-title">Fundamentos que Funcionam</div>
-      <div class="learn-desc">Conceitos diretos que você aplica ainda durante a aula. Zero enrolação, 100% prático.</div>
+      <div class="learn-title">Posicionamento no Audiovisual</div>
+      <div class="learn-desc">Como sair da posição de operador de câmera e ser percebido como referência. O que grandes eventos e players buscam num filmmaker antes de fechar contrato.</div>
     </div>
     <div class="learn-card scan-hover reveal" style="transition-delay:0.1s">
       <div class="learn-number">02</div>
-      <div class="learn-title">Estratégia em Tempo Real</div>
-      <div class="learn-desc">Tomada de decisão ao vivo, com situações reais discutidas no momento.</div>
+      <div class="learn-title">Autoridade no Instagram</div>
+      <div class="learn-desc">Como construir um perfil que atrai contratantes em vez de apenas seguidores. O que publicar, como mostrar bastidores, e por que a maioria dos filmmakers faz isso errado.</div>
     </div>
     <div class="learn-card scan-hover reveal" style="transition-delay:0.2s">
       <div class="learn-number">03</div>
-      <div class="learn-title">Próximos Passos Claros</div>
-      <div class="learn-desc">Você sai da aula sabendo exatamente o que fazer — com um caminho definido pra evoluir.</div>
+      <div class="learn-title">Como Atrair Grandes Eventos</div>
+      <div class="learn-desc">Por que alguns filmmakers recebem propostas sem prospectar, enquanto outros cobram barato e brigam por orçamento. O que diferencia quem é chamado de quem espera.</div>
     </div>
   </div>
 </section>
@@ -373,19 +362,19 @@
     <div class="for-card yes reveal">
       <span class="for-tag">✓ É pra você se...</span>
       <ul class="for-list">
-        <li>Quer aprender na prática, não só teoria</li>
-        <li>Está disposto a agir logo após a aula</li>
-        <li>Busca evolução real e consistente</li>
-        <li>Quer fazer parte de uma comunidade séria</li>
+        <li>Já filma mas não sabe se posicionar no mercado</li>
+        <li>Quer parar de cobrar barato e ser procurado pelos grandes eventos</li>
+        <li>Tem perfil no Instagram mas não converte em contratos</li>
+        <li>Quer entender como filmmakers de referência constroem autoridade</li>
       </ul>
     </div>
     <div class="for-card no reveal" style="transition-delay:0.15s">
       <span class="for-tag">× Não é pra você se...</span>
       <ul class="for-list">
-        <li>Busca fórmula mágica sem esforço</li>
-        <li>Não está pronto pra sair da zona de conforto</li>
-        <li>Prefere consumir sem implementar</li>
-        <li>Não tem tempo pra se comprometer</li>
+        <li>Está buscando atalho sem construir posicionamento real</li>
+        <li>Não filma e quer começar do zero. Essa aula não é de técnica</li>
+        <li>Espera fórmulas prontas sem adaptar à sua realidade</li>
+        <li>Não tem intenção de aplicar o que aprender</li>
       </ul>
     </div>
   </div>
@@ -395,12 +384,14 @@
 <section>
   <div class="section-label reveal">Quem vai conduzir</div>
   <div class="instructor-block reveal">
-    <div class="instructor-visual">RC</div>
+    <div class="instructor-visual">
+      <img src="rony-foto.jpg" alt="Rony Cabral">
+    </div>
     <div>
       <div class="instructor-name">Rony Cabral</div>
       <div class="instructor-role">Fundador · Creative Squad Productions</div>
       <p class="instructor-bio">
-        Profissional com anos de experiência no mercado, fundador da Creative Squad Productions e criador do Realtime's Club. Apaixonado por transformar conhecimento em resultados concretos para quem está disposto a evoluir de verdade.
+        Filmmaker nos bastidores dos maiores eventos e players da América Latina. Fundador da Creative Squad Productions e criador do Realtime's Club. Captura o que acontece nos maiores palcos do continente e compartilha o que aprendeu com quem quer fazer o mesmo.
       </p>
     </div>
   </div>
@@ -442,10 +433,6 @@
 </footer>
 
 <script>
-// ══ SENHA DO PAINEL — troque antes de subir ══
-const ADMIN_PASSWORD = 'realtimes2025';
-const STORAGE_KEY    = 'rtc_live_config';
-
 // ── Scroll Reveal ──
 const reveals = document.querySelectorAll('.reveal');
 const io = new IntersectionObserver((entries) => {
@@ -453,22 +440,28 @@ const io = new IntersectionObserver((entries) => {
 }, { threshold: 0.1 });
 reveals.forEach(el => io.observe(el));
 
-// ── Config (localStorage) ──
-function loadConfig() {
-  try { const r = localStorage.getItem(STORAGE_KEY); return r ? JSON.parse(r) : null; }
-  catch(e) { return null; }
+// ── Config (Serverless Function) ──
+let liveConfig = null;
+
+async function fetchLiveConfig() {
+  try {
+    const res = await fetch('/api/live-config');
+    if (!res.ok) return null;
+    return await res.json();
+  } catch(e) {
+    return null;
+  }
 }
-function saveConfig(cfg) { localStorage.setItem(STORAGE_KEY, JSON.stringify(cfg)); }
 
 // ── Countdown ──
 function getEventDate() {
-  const cfg = loadConfig();
-  if (cfg && cfg.date && cfg.time) return new Date(`${cfg.date}T${cfg.time}:00-03:00`);
+  if (liveConfig && liveConfig.date && liveConfig.time)
+    return new Date(`${liveConfig.date}T${liveConfig.time}:00-03:00`);
   return null;
 }
 
 function updateCountdown() {
-  const ED   = getEventDate();
+  const ED    = getEventDate();
   const badge = document.getElementById('nav-badge');
 
   if (!ED) {
@@ -496,23 +489,24 @@ function updateCountdown() {
 }
 
 function applyConfig() {
-  const cfg = loadConfig();
-  if (cfg && cfg.title) document.getElementById('live-title-display').textContent = cfg.title;
+  if (liveConfig && liveConfig.title)
+    document.getElementById('live-title-display').textContent = liveConfig.title;
+  const promoNote = document.getElementById('event-promo-note');
+  if (promoNote) promoNote.style.display = (liveConfig && liveConfig.showPromoNote === false) ? 'none' : '';
 }
 
-updateCountdown();
-applyConfig();
-setInterval(updateCountdown, 1000);
+(async function init() {
+  liveConfig = await fetchLiveConfig();
+  applyConfig();
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+})();
 
 // ── Admin ──
 function openAdmin() {
   document.getElementById('adminOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
-  document.getElementById('admin-login').style.display    = 'block';
-  document.getElementById('admin-settings').style.display = 'none';
-  document.getElementById('admin-pass').value  = '';
-  document.getElementById('login-msg').textContent = '';
-  setTimeout(() => document.getElementById('admin-pass').focus(), 100);
+  renderAdminInfo();
 }
 
 function closeAdmin() {
@@ -523,57 +517,19 @@ function closeAdmin() {
 document.getElementById('adminOverlay').addEventListener('click', function(e) { if (e.target === this) closeAdmin(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAdmin(); });
 
-function doLogin() {
-  const pass = document.getElementById('admin-pass').value;
-  const msg  = document.getElementById('login-msg');
-  if (pass === ADMIN_PASSWORD) {
-    document.getElementById('admin-login').style.display    = 'none';
-    document.getElementById('admin-settings').style.display = 'block';
-    loadCurrentConfig();
-  } else {
-    msg.className = 'admin-msg err';
-    msg.textContent = '✕ Senha incorreta';
-    document.getElementById('admin-pass').value = '';
-  }
-}
-
-function loadCurrentConfig() {
-  const cfg  = loadConfig();
+function renderAdminInfo() {
   const info = document.getElementById('admin-current-info');
+  const cfg  = liveConfig;
   if (cfg && cfg.date) {
     const [y,mo,d] = cfg.date.split('-');
-    document.getElementById('admin-date').value       = cfg.date;
-    document.getElementById('admin-time').value       = cfg.time || '20:00';
-    document.getElementById('admin-title-txt').value  = cfg.title || '';
-    info.innerHTML = `Configuração ativa:<br><span>${d}/${mo}/${y} às ${cfg.time || '20:00'} (Brasília)</span>`;
+    const promo = cfg.showPromoNote ? 'visível' : 'oculto';
+    info.innerHTML =
+      `Data: <span>${d}/${mo}/${y} às ${cfg.time || '20:00'} (Brasília)</span><br>` +
+      `Título: <span>${cfg.title || 'A aula começa em'}</span><br>` +
+      `Aviso presencial: <span>${promo}</span>`;
   } else {
-    info.innerHTML = `<span>Nenhuma data configurada ainda.</span>`;
-    const t = new Date(); t.setDate(t.getDate() + 7);
-    document.getElementById('admin-date').value = t.toISOString().split('T')[0];
-    document.getElementById('admin-time').value = '20:00';
+    info.innerHTML = `<span>Nenhuma data configurada. Defina LIVE_DATE na Vercel.</span>`;
   }
-}
-
-function saveSettings() {
-  const date  = document.getElementById('admin-date').value;
-  const time  = document.getElementById('admin-time').value;
-  const title = document.getElementById('admin-title-txt').value.trim();
-  const msg   = document.getElementById('save-msg');
-
-  if (!date || !time) {
-    msg.className = 'admin-msg err';
-    msg.textContent = '✕ Preencha data e horário';
-    return;
-  }
-
-  saveConfig({ date, time, title: title || 'A aula começa em' });
-  updateCountdown();
-  applyConfig();
-  loadCurrentConfig();
-
-  msg.className = 'admin-msg ok';
-  msg.textContent = '✓ Salvo! Countdown atualizado ao vivo.';
-  setTimeout(() => msg.textContent = '', 3500);
 }
 </script>
 </body>
