@@ -17,7 +17,7 @@
     --neon-green: #39ff14;
     --text: #f0eaff;
     --muted: #8b7aa8;
-    --border: rgba(122,31,43,0.25);
+    --border: rgba(217,58,48,0.25);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -43,8 +43,8 @@
   .grid-bg {
     position: fixed; inset: 0;
     background-image:
-      linear-gradient(rgba(122,31,43,0.06) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(122,31,43,0.06) 1px, transparent 1px);
+      linear-gradient(rgba(217,58,48,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(217,58,48,0.06) 1px, transparent 1px);
     background-size: 48px 48px;
     pointer-events: none;
     z-index: 0;
@@ -52,8 +52,8 @@
 
   .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); pointer-events: none; z-index: 0; }
   .glow-orb.one { width: 600px; height: 600px; background: rgba(122,31,43,0.18); top: -200px; left: -200px; animation: drift1 12s ease-in-out infinite alternate; }
-  .glow-orb.two { width: 400px; height: 400px; background: rgba(229,9,20,0.12); bottom: -100px; right: -100px; animation: drift2 15s ease-in-out infinite alternate; }
-  .glow-orb.three { width: 300px; height: 300px; background: rgba(74,15,23,0.08); top: 50%; left: 60%; animation: drift3 18s ease-in-out infinite alternate; }
+  .glow-orb.two { width: 400px; height: 400px; background: rgba(240,16,32,0.12); bottom: -100px; right: -100px; animation: drift2 15s ease-in-out infinite alternate; }
+  .glow-orb.three { width: 300px; height: 300px; background: rgba(74,15,23,0.18); top: 50%; left: 60%; animation: drift3 18s ease-in-out infinite alternate; }
 
   @keyframes drift1 { to { transform: translate(80px, 60px); } }
   @keyframes drift2 { to { transform: translate(-60px, -80px); } }
@@ -79,14 +79,6 @@
     animation: blink-border 2s step-end infinite;
   }
 
-  .admin-trigger {
-    font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase;
-    color: rgba(122,31,43,0.4); cursor: pointer; padding: 4px 8px;
-    border: 1px solid rgba(122,31,43,0.2);
-    transition: all 0.2s; user-select: none;
-  }
-  .admin-trigger:hover { color: var(--purple-light); border-color: var(--border); }
-
   @keyframes blink-border {
     0%, 100% { border-color: var(--neon-green); color: var(--neon-green); }
     50% { border-color: rgba(57,255,20,0.3); color: rgba(57,255,20,0.5); }
@@ -99,14 +91,16 @@
   }
 
   .hero-eyebrow { font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--purple-light); margin-bottom: 24px; opacity: 0; animation: fadeUp 0.8s 0.2s forwards; }
-  .hero-eyebrow::before, .hero-eyebrow::after { content: '·'; margin: 0 8px; opacity: 0.5; }
+  .hero-eyebrow::before, .hero-eyebrow::after { content: '·'; margin: 0 8px; opacity: 0.6; }
 
-  .hero-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(2.4rem, 7vw, 7rem); line-height: 0.95; letter-spacing: -0.02em; text-transform: uppercase; margin-bottom: 8px; opacity: 0; animation: fadeUp 0.8s 0.4s forwards; }
-  .hero-title .line-accent { display: block; background: linear-gradient(90deg, var(--purple), var(--neon-violet), var(--neon-blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .hero-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(2.4rem, 8vw, 7rem); line-height: 0.95; letter-spacing: -0.02em; text-transform: uppercase; margin-bottom: 8px; opacity: 0; animation: fadeUp 0.8s 0.4s forwards; }
+  .hero-title .line-accent { display: block; background: linear-gradient(90deg, var(--purple), var(--neon-violet)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
   .hero-title .line-stroke { display: block; -webkit-text-stroke: 1.5px rgba(240,234,255,0.3); -webkit-text-fill-color: transparent; color: transparent; }
 
-  .hero-sub { font-size: clamp(0.85rem, 2vw, 1rem); color: var(--muted); max-width: 560px; line-height: 1.7; margin: 32px auto 48px; opacity: 0; animation: fadeUp 0.8s 0.6s forwards; }
+  .hero-sub { font-size: clamp(0.85rem, 2vw, 1rem); color: var(--muted); max-width: 620px; line-height: 1.7; margin: 32px auto 8px; opacity: 0; animation: fadeUp 0.8s 0.6s forwards; }
   .hero-sub strong { color: var(--text); }
+
+  .hero-promo { font-size: 0.78rem; color: var(--purple-light); max-width: 560px; line-height: 1.6; margin: 16px auto 40px; opacity: 0; animation: fadeUp 0.8s 0.65s forwards; }
 
   .scan-divider { width: 100%; max-width: 560px; height: 1px; background: linear-gradient(90deg, transparent, var(--purple), transparent); margin: 0 auto 48px; opacity: 0; animation: fadeUp 0.8s 0.7s forwards; }
 
@@ -119,10 +113,10 @@
     font-weight: 700; font-size: 1rem; letter-spacing: 0.06em; text-transform: uppercase;
     padding: 20px 48px; position: relative; overflow: hidden;
     transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 0 40px rgba(122,31,43,0.5), 0 0 80px rgba(229,9,20,0.2);
+    box-shadow: 0 0 40px rgba(217,58,48,0.4), 0 0 80px rgba(217,58,48,0.15);
   }
   .cta-btn::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, var(--neon-violet), var(--purple)); opacity: 0; transition: opacity 0.3s; }
-  .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 0 60px rgba(229,9,20,0.6), 0 0 120px rgba(229,9,20,0.25); }
+  .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 0 60px rgba(217,58,48,0.6), 0 0 120px rgba(217,58,48,0.2); }
   .cta-btn:hover::before { opacity: 1; }
   .cta-btn span { position: relative; z-index: 1; }
   .cta-btn .arrow { position: relative; z-index: 1; font-size: 1.2rem; transition: transform 0.2s; }
@@ -144,9 +138,9 @@
   .learns-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); }
   .learn-card { background: var(--surface); padding: 40px 32px; position: relative; overflow: hidden; transition: background 0.3s; }
   .learn-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 0; background: linear-gradient(to bottom, var(--purple), var(--neon-violet)); transition: height 0.4s; }
-  .learn-card:hover { background: rgba(122,31,43,0.08); }
+  .learn-card:hover { background: rgba(217,58,48,0.08); }
   .learn-card:hover::before { height: 100%; }
-  .learn-number { font-family: 'Syne', sans-serif; font-size: 3.5rem; font-weight: 800; line-height: 1; color: rgba(122,31,43,0.42); margin-bottom: 16px; letter-spacing: -0.04em; }
+  .learn-number { font-family: 'Syne', sans-serif; font-size: 3.5rem; font-weight: 800; line-height: 1; color: rgba(217,58,48,0.42); margin-bottom: 16px; letter-spacing: -0.04em; }
   .learn-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.05rem; margin-bottom: 12px; color: var(--text); }
   .learn-desc { font-size: 0.78rem; line-height: 1.7; color: var(--muted); }
 
@@ -165,18 +159,18 @@
   .for-card.no .for-list li::before { content: '×'; color: #f87171; }
 
   .instructor-block { display: grid; grid-template-columns: 1fr 2fr; gap: 60px; align-items: center; border: 1px solid var(--border); padding: 60px; background: var(--surface); }
-  .instructor-visual { aspect-ratio: 1; position: relative; overflow: hidden; }
+  .instructor-visual { aspect-ratio: 1; position: relative; overflow: hidden; background: var(--surface); }
   .instructor-visual img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .instructor-visual::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 25%; background: linear-gradient(180deg, transparent, rgba(5,5,8,0.5)); pointer-events: none; }
+  .instructor-visual::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 75%, rgba(5,5,8,0.55)); pointer-events: none; }
   .instructor-name { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; margin-bottom: 8px; }
   .instructor-role { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--purple-light); margin-bottom: 24px; }
   .instructor-bio { font-size: 0.82rem; line-height: 1.8; color: var(--muted); }
 
   .countdown-wrap { text-align: center; padding: 80px 24px; position: relative; z-index: 1; }
   .countdown-title { font-family: 'Syne', sans-serif; font-size: 0.75rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--purple-light); margin-bottom: 40px; }
-  .countdown-grid { display: flex; justify-content: center; flex-wrap: wrap; gap: 2px; margin-bottom: 64px; }
+  .countdown-grid { display: flex; justify-content: center; gap: 2px; margin-bottom: 64px; flex-wrap: wrap; }
   .countdown-unit { background: var(--surface); border: 1px solid var(--border); padding: 32px 40px; min-width: 120px; text-align: center; }
-  .countdown-num { font-family: 'Syne', sans-serif; font-size: 3.5rem; font-weight: 800; line-height: 1; background: linear-gradient(135deg, var(--purple-light), var(--neon-blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .countdown-num { font-family: 'Syne', sans-serif; font-size: 3.5rem; font-weight: 800; line-height: 1; background: linear-gradient(135deg, var(--purple-light), var(--neon-violet)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
   .countdown-label { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-top: 8px; }
 
   .final-cta { text-align: center; padding: 120px 24px; position: relative; z-index: 1; border-top: 1px solid var(--border); }
@@ -194,60 +188,21 @@
   .reveal.visible { opacity: 1; transform: none; }
 
   .scan-hover { position: relative; overflow: hidden; }
-  .scan-hover::after { content: ''; position: absolute; top: -100%; left: 0; right: 0; height: 40%; background: linear-gradient(transparent, rgba(122,31,43,0.06), transparent); transition: top 0.4s ease; pointer-events: none; }
+  .scan-hover::after { content: ''; position: absolute; top: -100%; left: 0; right: 0; height: 40%; background: linear-gradient(transparent, rgba(217,58,48,0.06), transparent); transition: top 0.4s ease; pointer-events: none; }
   .scan-hover:hover::after { top: 150%; }
-
-  /* ════ PAINEL ADMIN ════ */
-  .admin-overlay {
-    display: none; position: fixed; inset: 0;
-    background: rgba(5,5,8,0.96); backdrop-filter: blur(16px);
-    z-index: 9000; align-items: center; justify-content: center; padding: 24px;
-  }
-  .admin-overlay.open { display: flex; }
-
-  .admin-panel {
-    background: var(--surface); border: 1px solid var(--border);
-    width: 100%; max-width: 480px; padding: 48px 40px; position: relative;
-  }
-  .admin-panel::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--purple), var(--neon-violet), var(--neon-blue)); }
-
-  .admin-close { position: absolute; top: 16px; right: 16px; background: none; border: none; color: var(--muted); font-size: 1.2rem; cursor: pointer; transition: color 0.2s; }
-  .admin-close:hover { color: var(--text); }
-
-  .admin-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.3rem; margin-bottom: 6px; text-transform: uppercase; }
-  .admin-subtitle { font-size: 0.7rem; letter-spacing: 0.15em; color: var(--muted); text-transform: uppercase; margin-bottom: 32px; }
-
-  .admin-field { margin-bottom: 20px; }
-  .admin-label { display: block; font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--purple-light); margin-bottom: 8px; }
-  .admin-input { width: 100%; background: var(--bg); border: 1px solid var(--border); color: var(--text); font-family: 'Space Mono', monospace; font-size: 0.85rem; padding: 12px 16px; outline: none; transition: border-color 0.2s; }
-  .admin-input:focus { border-color: var(--purple-light); }
-  .admin-input::placeholder { color: var(--muted); }
-
-  .admin-btn { width: 100%; padding: 16px; margin-top: 8px; background: linear-gradient(135deg, var(--purple), var(--neon-violet)); border: none; color: #fff; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.9rem; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: opacity 0.2s; }
-  .admin-btn:hover { opacity: 0.85; }
-
-  .admin-msg { margin-top: 16px; font-size: 0.7rem; letter-spacing: 0.1em; text-align: center; text-transform: uppercase; min-height: 20px; }
-  .admin-msg.ok { color: var(--neon-green); }
-  .admin-msg.err { color: #f87171; }
-
-  .admin-divider { height: 1px; background: var(--border); margin: 28px 0; }
-  .admin-current { font-size: 0.7rem; color: var(--muted); line-height: 1.8; }
-  .admin-current span { color: var(--purple-light); }
 
   @media (max-width: 768px) {
     nav { padding: 16px 20px; }
     .for-who-grid { grid-template-columns: 1fr; }
     .instructor-block { grid-template-columns: 1fr; padding: 32px 24px; gap: 32px; }
-    .instructor-visual { max-width: 200px; margin: 0 auto; }
+    .instructor-visual { max-width: 140px; margin: 0 auto; }
     .countdown-unit { min-width: 60px; padding: 16px 12px; }
     .countdown-num { font-size: 2rem; }
-    .countdown-grid { gap: 4px; }
     footer { flex-direction: column; gap: 12px; text-align: center; }
-    .admin-panel { padding: 36px 24px; }
   }
 
   @media (max-width: 400px) {
-    .countdown-unit { min-width: 52px; padding: 12px 8px; }
+    .countdown-unit { min-width: 50px; padding: 12px 8px; }
     .countdown-num { font-size: 1.6rem; }
     .cta-btn { padding: 16px 28px; font-size: 0.85rem; }
   }
@@ -260,37 +215,11 @@
 <div class="glow-orb two"></div>
 <div class="glow-orb three"></div>
 
-<!-- PAINEL ADMIN -->
-<div class="admin-overlay" id="adminOverlay">
-  <div class="admin-panel">
-    <button class="admin-close" onclick="closeAdmin()">✕</button>
-
-    <div class="admin-title">Status da Live</div>
-    <div class="admin-subtitle">Realtime's Club · Configuração Atual</div>
-
-    <div class="admin-current" id="admin-current-info" style="margin-bottom:24px;">Carregando...</div>
-
-    <div class="admin-divider"></div>
-
-    <p style="font-size:0.72rem; color:var(--muted); line-height:1.9; margin-top:20px;">
-      Para atualizar a data, horário ou o aviso da palestra presencial, acesse o painel da Vercel em<br>
-      <span style="color:var(--purple-light);">vercel.com → projeto → Settings → Environment Variables</span><br>
-      e edite as variáveis
-      <span style="color:var(--purple-light);">LIVE_DATE</span>,
-      <span style="color:var(--purple-light);">LIVE_TIME</span>,
-      <span style="color:var(--purple-light);">LIVE_TITLE</span> ou
-      <span style="color:var(--purple-light);">SHOW_PROMO_NOTE</span>.<br>
-      Depois, faça um <strong style="color:var(--text);">Redeploy</strong> para aplicar.
-    </p>
-  </div>
-</div>
-
 <!-- NAV -->
 <nav>
   <div class="nav-logo">Realtime's <span>Club</span></div>
   <div class="nav-right">
     <div class="nav-badge" id="nav-badge">● Ao Vivo em Breve</div>
-    <div class="admin-trigger" onclick="openAdmin()" title="Admin">⚙</div>
   </div>
 </nav>
 
@@ -302,7 +231,12 @@
     <span class="line-accent">Club</span>
   </h1>
   <p class="hero-sub">
-    Uma aula ao vivo sobre como <strong>filmmakers param de prospectar</strong> e passam a ser procurados pelos grandes eventos. Posicionamento real, bastidores concretos e a estratégia que transforma sua câmera em autoridade.
+    Uma aula ao vivo sobre como <strong>filmmakers param de prospectar</strong> e passam a ser
+    procurados pelos grandes eventos. Posicionamento real, bastidores concretos e a estratégia
+    que transforma sua câmera em autoridade.
+  </p>
+  <p class="hero-promo" id="event-promo-note">
+    Quem participar da aula concorre a uma vaga presencial na palestra do dia 27.
   </p>
   <div class="scan-divider"></div>
   <div class="cta-wrap">
@@ -311,7 +245,6 @@
       <span class="arrow">→</span>
     </a>
     <p class="cta-note">Acesso imediato ao grupo exclusivo após pagamento</p>
-    <p id="event-promo-note" class="cta-note" style="margin-top:10px; color:var(--purple-light);">Quem participar da aula concorre a uma vaga presencial na palestra do dia 27.</p>
   </div>
 </div>
 
@@ -362,19 +295,19 @@
     <div class="for-card yes reveal">
       <span class="for-tag">✓ É pra você se...</span>
       <ul class="for-list">
-        <li>Já filma mas não sabe se posicionar no mercado</li>
-        <li>Quer parar de cobrar barato e ser procurado pelos grandes eventos</li>
-        <li>Tem perfil no Instagram mas não converte em contratos</li>
-        <li>Quer entender como filmmakers de referência constroem autoridade</li>
+        <li>Já filma bem, mas não sabe se posicionar</li>
+        <li>Quer parar de cobrar barato e ser procurado</li>
+        <li>Busca construir autoridade real, não atalho</li>
+        <li>Quer fazer parte de uma comunidade séria de audiovisual</li>
       </ul>
     </div>
     <div class="for-card no reveal" style="transition-delay:0.15s">
       <span class="for-tag">× Não é pra você se...</span>
       <ul class="for-list">
-        <li>Está buscando atalho sem construir posicionamento real</li>
-        <li>Não filma e quer começar do zero. Essa aula não é de técnica</li>
-        <li>Espera fórmulas prontas sem adaptar à sua realidade</li>
-        <li>Não tem intenção de aplicar o que aprender</li>
+        <li>Busca fórmula mágica sem aplicar nada</li>
+        <li>Acha que só equipamento melhor resolve</li>
+        <li>Prefere consumir conteúdo sem implementar</li>
+        <li>Não tem tempo pra se comprometer com o próprio negócio</li>
       </ul>
     </div>
   </div>
@@ -391,7 +324,9 @@
       <div class="instructor-name">Rony Cabral</div>
       <div class="instructor-role">Fundador · Creative Squad Productions</div>
       <p class="instructor-bio">
-        Filmmaker nos bastidores dos maiores eventos e players da América Latina. Fundador da Creative Squad Productions e criador do Realtime's Club. Captura o que acontece nos maiores palcos do continente e compartilha o que aprendeu com quem quer fazer o mesmo.
+        Filmmaker nos bastidores dos maiores eventos e players da América Latina. Fundador da
+        Creative Squad Productions e criador do Realtime's Club. Captura o que acontece nos
+        maiores palcos do continente e compartilha o que aprendeu com quem quer fazer o mesmo.
       </p>
     </div>
   </div>
@@ -399,7 +334,7 @@
 
 <!-- COUNTDOWN -->
 <div class="countdown-wrap reveal">
-  <p class="countdown-title" id="live-title-display">A aula começa em</p>
+  <p class="countdown-title">A aula começa em</p>
   <div class="countdown-grid">
     <div class="countdown-unit"><div class="countdown-num" id="cd-days">00</div><div class="countdown-label">Dias</div></div>
     <div class="countdown-unit"><div class="countdown-num" id="cd-hours">00</div><div class="countdown-label">Horas</div></div>
@@ -428,7 +363,7 @@
 
 <!-- FOOTER -->
 <footer>
-  <span>© 2025 Realtime's Club · <a href="http://www.ronycabral.com.br" target="_blank">ronycabral.com.br</a></span>
+  <span>© 2026 Realtime's Club · <a href="http://www.ronycabral.com.br" target="_blank">ronycabral.com.br</a></span>
   <span>Creative Squad Productions</span>
 </footer>
 
@@ -440,36 +375,12 @@ const io = new IntersectionObserver((entries) => {
 }, { threshold: 0.1 });
 reveals.forEach(el => io.observe(el));
 
-// ── Config (Serverless Function) ──
-let liveConfig = null;
-
-async function fetchLiveConfig() {
-  try {
-    const res = await fetch('/api/live-config');
-    if (!res.ok) return null;
-    return await res.json();
-  } catch(e) {
-    return null;
-  }
-}
-
-// ── Countdown ──
-function getEventDate() {
-  if (liveConfig && liveConfig.date && liveConfig.time)
-    return new Date(`${liveConfig.date}T${liveConfig.time}:00-03:00`);
-  return null;
-}
+// ── Countdown — DATA FIXA, edite a linha abaixo quando precisar mudar a live ──
+const EVENT_DATE = new Date('2026-06-26T20:00:00-03:00');
 
 function updateCountdown() {
-  const ED    = getEventDate();
   const badge = document.getElementById('nav-badge');
-
-  if (!ED) {
-    ['cd-days','cd-hours','cd-min','cd-sec'].forEach(id => document.getElementById(id).textContent = '--');
-    return;
-  }
-
-  const diff = ED - new Date();
+  const diff = EVENT_DATE - new Date();
 
   if (diff <= 0) {
     ['cd-days','cd-hours','cd-min','cd-sec'].forEach(id => document.getElementById(id).textContent = '00');
@@ -488,49 +399,8 @@ function updateCountdown() {
   document.getElementById('cd-sec').textContent   = String(s).padStart(2,'0');
 }
 
-function applyConfig() {
-  if (liveConfig && liveConfig.title)
-    document.getElementById('live-title-display').textContent = liveConfig.title;
-  const promoNote = document.getElementById('event-promo-note');
-  if (promoNote) promoNote.style.display = (liveConfig && liveConfig.showPromoNote === false) ? 'none' : '';
-}
-
-(async function init() {
-  liveConfig = await fetchLiveConfig();
-  applyConfig();
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
-})();
-
-// ── Admin ──
-function openAdmin() {
-  document.getElementById('adminOverlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
-  renderAdminInfo();
-}
-
-function closeAdmin() {
-  document.getElementById('adminOverlay').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-document.getElementById('adminOverlay').addEventListener('click', function(e) { if (e.target === this) closeAdmin(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAdmin(); });
-
-function renderAdminInfo() {
-  const info = document.getElementById('admin-current-info');
-  const cfg  = liveConfig;
-  if (cfg && cfg.date) {
-    const [y,mo,d] = cfg.date.split('-');
-    const promo = cfg.showPromoNote ? 'visível' : 'oculto';
-    info.innerHTML =
-      `Data: <span>${d}/${mo}/${y} às ${cfg.time || '20:00'} (Brasília)</span><br>` +
-      `Título: <span>${cfg.title || 'A aula começa em'}</span><br>` +
-      `Aviso presencial: <span>${promo}</span>`;
-  } else {
-    info.innerHTML = `<span>Nenhuma data configurada. Defina LIVE_DATE na Vercel.</span>`;
-  }
-}
+updateCountdown();
+setInterval(updateCountdown, 1000);
 </script>
 </body>
 </html>
